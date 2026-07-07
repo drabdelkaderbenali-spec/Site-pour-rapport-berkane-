@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport public trilingue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --red:#8b1e1e;
+      --green:#0f6b3d;
+      --gold:#caa24a;
+      --bg:#f7f8fa;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Cairo',Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .topbar{background:#0b2e22;color:#fff;padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .topbar > div:first-child{flex:1;font-weight:600;font-size:15px;line-height:1.25}
+    .lang a{color:#fff;text-decoration:none;margin-left:12px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.12)}
+    .lang a.active{background:var(--gold);color:#111}
+    .nav{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+    .brand{font-weight:700;font-size:20px;color:var(--green)}
+    .menu a{margin:0 10px;text-decoration:none;color:var(--text);font-weight:600}
+    .wrap{max-width:1180px;margin:0 auto;padding:24px}
+    .hero{
+      position:relative;border-radius:24px;overflow:hidden;color:#fff;
+      min-height:480px;display:flex;align-items:flex-end;
+      background:url('https://pplx-res.cloudinary.com/image/upload/pplx_search_images/ec18cd4193e5868f0be40e7870143cdf1d808edb.jpg') center/cover no-repeat;
+    }
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.75))}
+    .hero-content{position:relative;z-index:2;padding:36px;max-width:980px}
+    .hero h1{font-size:48px;margin:0 0 12px}
+    .hero p{font-size:19px;margin:0 0 22px;color:#f3f4f6}
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 22px}
+    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px)}
+    .btns{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:13px 18px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn.primary{background:var(--gold);color:#111}
+    .btn.dark{background:#111;color:#fff}
+    .btn.green{background:var(--green);color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:24px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:0 6px 20px rgba(0,0,0,.05)}
+    .card h2,.card h3{margin-top:0}
+    .center{text-align:center}
+    .portrait,.symbol{max-width:180px;width:100%;height:auto;border-radius:14px;display:block;margin:0 auto 10px}
+    .contrib-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:3px solid rgba(0,0,0,.06)}
+    .section-title{font-size:30px;margin:34px 0 14px}
+    .split{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:24px}
+    .news{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+    .news-item{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .news-item img{width:100%;height:170px;object-fit:cover;display:block}
+    .news-item .p{padding:16px}
+    .rtl{direction:rtl;text-align:right}
+    .rtl .topbar,.rtl .nav{direction:rtl}
+    .rtl .lang a{margin-left:0;margin-right:12px}
+    /* Justify paragraphs for a polished, newspaper-like layout */
+    p, .card p, .hero p, .split .card p { text-align:justify; text-justify:inter-word; }
+    .rtl p, .rtl .card p { text-align:justify; }
+
+    /* Improve typography and responsiveness */
+    /* Use Inter for Latin (FR/EN) and keep Cairo for Arabic; fallbacks provided */
+    body, .lang-page:not(.rtl) { font-family: 'Inter', 'Cairo', Arial, sans-serif; }
+    .lang-page.rtl, [lang="ar"] { font-family: 'Cairo', 'Noto Naskh Arabic', 'Noto Sans Arabic', serif; }
+
+    #royal{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;gap:12px}
+    #royal p{max-width:980px;margin:0 auto 12px;font-size:clamp(16px,1.6vw,20px);line-height:1.95;hyphens:auto;overflow-wrap:break-word}
+    /* Use Merriweather for Latin speech text, keep Cairo for Arabic */
+    #royal p:not([lang="ar"]) { font-family: 'Merriweather', 'Inter', serif; font-weight:400; }
+    #royal p[lang="ar"] { font-family: 'Cairo', 'Noto Naskh Arabic', serif; }
+    #royal .portrait{max-width:240px;border-radius:12px}
+    .card p{font-size:clamp(15px,1.2vw,18px);line-height:1.8}
+    .hero p{font-size:clamp(17px,1.8vw,20px);line-height:1.9}
+    h1,h2,h3{font-weight:600}
+
+    @media (max-width:900px){
+      #royal{padding:20px}
+      #royal .portrait{max-width:160px}
+    }
+    @media (max-width:800px){
+      .topbar > div:first-child{font-size:13px}
+      .hero h1{font-size:34px}
+      .hero{min-height:340px}
+      .hero-content{padding:20px}
+      .chips{gap:8px}
+      .split{grid-template-columns:1fr}
+      .menu{margin-top:10px}
+    }
+  </style>
+  <script>
+    // Prevent automatic browser scrolling to hash on initial load
+    if (location.hash) {
+      try {
+        if (history && history.replaceState) {
+          history.replaceState(null, '', location.pathname + location.search);
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    // Ensure page starts at top once DOM is ready
+    document.addEventListener('DOMContentLoaded', function(){
+      try { window.scrollTo(0,0); } catch(e){}
+    });
+  </script>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <span data-lang="ar" style="display:none">تقرير شامل لعشر سنوات من الإنجاز امتثالًا للرؤية الملكية السامية</span>
+      <span data-lang="fr">Rapport complet sur dix années de réalisations, conformément à la haute vision royale</span>
+      <span data-lang="en" style="display:none">Comprehensive report on ten years of achievements, in accordance with His Majesty's Royal Vision</span>
+    </div>
+    <div class="lang">
+      <a href="#fr" class="active" onclick="showLang('fr');return false;">FR</a>
+      <a href="#en" onclick="showLang('en');return false;">EN</a>
+      <a href="#ar" onclick="showLang('ar');return false;">AR</a>
+    </div>
+  </div>
+
+    <div class="nav">
+    <div class="brand"></div>
+    <div class="menu">
+      <span data-lang="fr"><a href="#about-fr" onclick="showLang('fr');return true;">À propos</a></span>
+      <span data-lang="en" style="display:none"><a href="#about-en" onclick="showLang('en');return true;">About</a></span>
+      <span data-lang="ar" style="display:none"><a href="#about-ar" onclick="showLang('ar');return true;">نبذة</a></span>
+      <span data-lang="fr"><a href="#summary-fr" onclick="showLang('fr');return true;">Résumé</a></span>
+      <span data-lang="en" style="display:none"><a href="#summary-en" onclick="showLang('en');return true;">Summary</a></span>
+      <span data-lang="ar" style="display:none"><a href="#summary-ar" onclick="showLang('ar');return true;">الملخص</a></span>
+
+      <span data-lang="fr"><a href="#chapters-fr" onclick="showLang('fr');return true;">Chapitres</a></span>
+      <span data-lang="en" style="display:none"><a href="#chapters-en" onclick="showLang('en');return true;">Chapters</a></span>
+      <span data-lang="ar" style="display:none"><a href="#chapters-ar" onclick="showLang('ar');return true;">الفصول</a></span>
+
+      <span data-lang="fr"><a href="#media-fr" onclick="showLang('fr');return true;">Médias</a></span>
+      <span data-lang="en" style="display:none"><a href="#media-en" onclick="showLang('en');return true;">Media</a></span>
+      <span data-lang="ar" style="display:none"><a href="#media-ar" onclick="showLang('ar');return true;">الوسائط</a></span>
+
+      <span data-lang="fr"><a href="#contact-fr" onclick="showLang('fr');return true;">Contact</a></span>
+      <span data-lang="en" style="display:none"><a href="#contact-en" onclick="showLang('en');return true;">Contact</a></span>
+      <span data-lang="ar" style="display:none"><a href="#contact-ar" onclick="showLang('ar');return true;">تواصل</a></span>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section id="royal" class="card center" style="margin-bottom:18px;">
+      <img class="portrait" src="https://maroc.ma/sites/default/files/inline-images/SM--2-_0.png" alt="Portrait de SM le Roi Mohammed VI" style="max-width:260px;border-radius:8px;margin-bottom:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);">
+      <div style="max-width:900px;">
+        <p data-lang="fr" lang="fr">la gouvernance territoriale n’est plus seulement une affaire d’ordre administratif ou de logique organisationnelle. Elle s’affirme désormais comme un levier essentiel pour consolider la justice territoriale, réduire les inégalités sociales, restaurer la confiance entre le citoyen et les institutions, décliner les engagements internationaux majeurs sous forme de projets concrets dans les cités, les régions et le reste des collectivités territoriales. <a href="https://www.collectivites-territoriales.gov.ma/fr/discours-et-messages-royaux/message-de-sm-le-roi-adresse-aux-participants-au-8e-congres-mondial-des" target="_blank" rel="noopener noreferrer">Message de SM le Roi (CGLU)</a></p>
+        <p data-lang="en" lang="en" style="display:none;">Territorial governance is no longer merely a matter of administrative order or organizational logic. It is now asserted as an essential lever to consolidate territorial justice, reduce social inequalities, restore trust between citizens and institutions, and translate major international commitments into concrete projects in cities, regions and other local authorities. <a href="https://www.collectivites-territoriales.gov.ma/fr/discours-et-messages-royaux/message-de-sm-le-roi-adresse-aux-participants-au-8e-congres-mondial-des" target="_blank" rel="noopener noreferrer">Message from His Majesty the King (UCLG)</a></p>
+        <p data-lang="ar" lang="ar" style="display:none;">لم تعد الحوكمة الترابية مسألة تتعلق فقط بالترتيب الإداري أو المنطق التنظيمي. فقد أصبحت اليوم رافعة أساسية لتعزيز العدالة الترابية، والحد من التفاوتات الاجتماعية، واستعادة الثقة بين المواطن والمؤسسات، وتحويل الالتزامات الدولية الكبرى إلى مشاريع ملموسة في المدن والمناطق وسائر الجماعات الترابية. <a href="https://www.collectivites-territoriales.gov.ma/fr/discours-et-messages-royaux/message-de-sm-le-roi-adresse-aux-participants-au-8e-congres-mondial-des" target="_blank" rel="noopener noreferrer">رسالة صاحب الجلالة الملك (CGLU)</a></p>
+      </div>
+    </section>
+    <section id="fr" class="lang-page">
+      <div class="hero">
+        <div class="hero-content">
+          <div class="chips">
+            <span class="chip">Berkane</span>
+            <span class="chip">Trilingue</span>
+            <span class="chip">Public</span>
+            <span class="chip">Rapport visuel</span>
+            <span class="chip">10 ans de réalisations - Commune de Berkane</span>
+          </div>
+          <h1>Rapport général sur les principales réalisations au cours de deux mandats</h1>
+          <p>Plateforme institutionnelle présentant les principales réalisations des deux derniers mandats, et les actions menées pour renforcer la gouvernance locale et la participation citoyenne.</p>
+          <div class="btns">
+            <a class="btn primary" href="#summary-fr" onclick="showLang('fr');return true;">Lire le résumé</a>
+            <a class="btn dark" href="#chapters-fr" onclick="showLang('fr');return true;">Voir les chapitres</a>
+            <a class="btn green" href="/pdf-complet">Télécharger le PDF</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card center">
+          <img class="symbol" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Berkane_letchina.JPG" alt="Symbole de Berkane">
+          <h3>Berkane</h3>
+          <p>Capitale marocaine des agrumes et identité visuelle du projet.</p>
+        </div>
+
+        
+
+        <div class="card">
+          <h3>Présentation rapide</h3>
+          <p>Ce site présente les idées essentielles du rapport de façon simple et élégante.</p>
+        </div>
+      </div>
+
+      <h2 id="ten-years" class="section-title">10 ans de réalisations</h2>
+      <div class="card">
+        <h3>10 années de réalisations  Deux mandats pour la gouvernance et la participation</h3>
+        <p>Au cours des deux derniers mandats, la Commune de Berkane a conduit des projets structurants alignés sur la vision royale, visant à améliorer les services publics, renforcer les infrastructures, favoriser l'emploi local et consolider la gouvernance et la participation citoyenne.</p>
+        <ul>
+          <li>Renforcement des infrastructures urbaines et des équipements sociaux.</li>
+          <li>Soutien à l'emploi local et à l'entrepreneuriat.</li>
+          <li>Actions d'inclusion sociale et renforcement des capacités de gouvernance locale.</li>
+        </ul>
+      </div>
+
+      <h2 id="about-fr" class="section-title">À propos</h2>
+      <div class="split">
+        <div class="card">
+          <h3>Pourquoi ce site</h3>
+          <p>Le but est de transformer un rapport long en une expérience claire, visuelle et agréable à parcourir.</p>
+        </div>
+        <div class="card">
+          <h3>Public visé</h3>
+          <p>Citoyens, étudiants, chercheurs, institutions et toute personne intéressée par le sujet.</p>
+        </div>
+      </div>
+      <div class="card center">
+        <img src="https://f2.hespress.com/wp-content/uploads/2021/09/Mohamed-Ibrahimi-du-PAM-reelu-president-du-Conseil-communal-de-Berkane.jpg" alt="Mohammed IBRAHIMI" class="contrib-photo">
+        <h3>Contributeur</h3>
+        <p>Mohammed IBRAHIMI - président du Conseil communal de Berkane</p>
+      </div>
+
+      <!-- English '10 years' block removed from FR section; present in EN section below -->
+
+      <h2 id="summary-fr" class="section-title">Résumé exécutif</h2>
+      <div class="card">
+        <p>Cette section présente les conclusions principales du rapport en quelques points simples.</p>
+        <ul>
+          <li>Point 1: idée principale.</li>
+          <li>Point 2: résultat important.</li>
+          <li>Point 3: constat central.</li>
+          <li>Point 4: tendance observée.</li>
+          <li>Point 5: conclusion générale.</li>
+        </ul>
+      </div>
+
+      <!-- Arabic block removed from FR section to avoid mixing languages -->
+
+      <h2 id="chapters-fr" class="section-title">Chapitres</h2>
+      <div class="grid">
+        <div class="card"><h3>Chapitre 1 - Contexte</h3><p>Le sujet, les enjeux, et le cadre général.</p></div>
+        <div class="card"><h3>Chapitre 2 - Méthodologie</h3><p>Sources, étapes de travail, et limites.</p></div>
+        <div class="card"><h3>Chapitre 3 - Résultats</h3><p>Les constats essentiels du rapport.</p></div>
+        <div class="card"><h3>Chapitre 4 - Recommandations</h3><p>Les actions proposées et pistes d’amélioration.</p></div>
+      </div>
+
+      <h2 id="media-fr" class="section-title">Médias</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Vidéo de présentation</h3>
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Galerie visuelle</h3>
+          <img src="https://via.placeholder.com/900x500" alt="Galerie visuelle du rapport">
+        </div>
+      </div>
+
+      <h2 id="contact-fr" class="section-title">Contact</h2>
+      <div class="card">
+        <h3>Contacts</h3>
+        <p>Professeur Khalid Chiayat +212 631320629</p>
+        <p>Farid +212 631320629</p>
+        <p>Email: info@example.org</p>
+      </div>
+    </section>
+
+    <section id="en" class="lang-page" style="display:none">
+      <div class="hero">
+        <div class="hero-content">
+          <div class="chips">
+            <span class="chip">Berkane</span>
+            <span class="chip">Trilingual</span>
+            <span class="chip">Public</span>
+            <span class="chip">Visual Report</span>
+            <span class="chip">10 Years of Achievements - Berkane Municipality</span>
+          </div>
+          <h1>Public Report Berkane Municipal Governance</h1>
+          <p>An elegant institutional platform inspired by Berkane's official style. Designed for the public, it presents concise text, clear visuals and short videos to make the report accessible.</p>
+          <div class="btns">
+            <a class="btn primary" href="#summary-en" onclick="showLang('en');return true;">Read the summary</a>
+            <a class="btn dark" href="#chapters-en" onclick="showLang('en');return true;">View the chapters</a>
+            <a class="btn green" href="/pdf-complet">Download the PDF</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card center">
+          <img class="symbol" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Berkane_letchina.JPG" alt="Berkane symbol">
+          <h3>Berkane</h3>
+          <p>Morocco's citrus capital and the project's visual identity.</p>
+        </div>
+
+        
+
+        <div class="card">
+          <h3>Quick Overview</h3>
+          <p>This site presents the report's key ideas clearly and accessibly.</p>
+        </div>
+      </div>
+
+      <h2 id="ten-years-en" class="section-title">10 Years of Achievements</h2>
+      <div class="card">
+        <h3>10 years of action, in accordance with His Majesty's Royal Vision</h3>
+        <p>Over the past decade, Berkane Municipality has implemented strategic projects aligned with the Royal Vision to improve public services and infrastructure, create local employment opportunities, and strengthen territorial cohesion.</p>
+        <ul>
+          <li>Development of urban and social infrastructure.</li>
+          <li>Programs supporting local employment and entrepreneurship.</li>
+          <li>Initiatives to promote social inclusion and strengthen local governance.</li>
+        </ul>
+      </div>
+
+      <h2 id="about-en" class="section-title">About</h2>
+      <div class="split">
+        <div class="card">
+          <h3>Why this site</h3>
+          <p>The goal is to transform a long report into a clear, visual, and engaging browsing experience.</p>
+        </div>
+        <div class="card">
+          <h3>Target audience</h3>
+          <p>Citizens, students, researchers, institutions and anyone interested in the topic.</p>
+        </div>
+      </div>
+        <div class="card center">
+          <img src="https://f2.hespress.com/wp-content/uploads/2021/09/Mohamed-Ibrahimi-du-PAM-reelu-president-du-Conseil-communal-de-Berkane.jpg" alt="Mohammed IBRAHIMI" class="contrib-photo">
+          <h3>Contributor</h3>
+          <p>Mohammed IBRAHIMI - President of the Berkane Municipal Council</p>
+        </div>
+
+      <h2 id="summary-en" class="section-title">Executive summary</h2>
+      <div class="card">
+        <p>This section summarizes the report's main conclusions in a few concise points.</p>
+        <ul>
+          <li>Core idea: a concise statement of the report's purpose.</li>
+          <li>Key result: the primary outcome identified.</li>
+          <li>Central finding: the most significant observation.</li>
+          <li>Observed trend: a notable trend revealed by the analysis.</li>
+          <li>Overall conclusion: recommended course of action.</li>
+        </ul>
+      </div>
+
+      <h2 id="chapters-en" class="section-title">Chapters</h2>
+      <div class="grid">
+        <div class="card"><h3>Chapter 1 - Context</h3><p>The subject, stakes, and general framework.</p></div>
+        <div class="card"><h3>Chapter 2 - Methodology</h3><p>Sources, steps of work, and limitations.</p></div>
+        <div class="card"><h3>Chapter 3 - Results</h3><p>The key findings of the report.</p></div>
+        <div class="card"><h3>Chapter 4 - Recommendations</h3><p>Proposed actions and improvement paths.</p></div>
+      </div>
+
+      <h2 id="media-en" class="section-title">Media</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Presentation video</h3>
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Visual gallery</h3>
+          <img src="https://via.placeholder.com/900x500" alt="Report visual gallery">
+        </div>
+      </div>
+
+      <h2 id="contact-en" class="section-title">Contact</h2>
+      <div class="card">
+        <h3>Contacts</h3>
+        <p>Professor Khalid Chiayat +212 631320629</p>
+        <p>Farid +212 631320629</p>
+        <p>Email: info@example.org</p>
+      </div>
+    </section>
+
+    <section id="ar" class="lang-page rtl" style="display:none" lang="ar" dir="rtl">
+      <div class="hero">
+        <div class="hero-content">
+          <div class="chips">
+            <span class="chip">بركان</span>
+            <span class="chip">ثلاثي اللغات</span>
+            <span class="chip">عام</span>
+            <span class="chip">تقرير بصري</span>
+            <span class="chip">10 سنوات من الإنجاز - جماعة بركان</span>
+          </div>
+          <h1>تقرير عام لأهم الإنجازات في ولايتين لتعزيز الحكامة والتشاركية</h1>
+          <div class="btns">
+            <a class="btn primary" href="#summary-ar" onclick="showLang('ar');return true;">اقرأ الملخص</a>
+            <a class="btn dark" href="#chapters-ar" onclick="showLang('ar');return true;">عرض الفصول</a>
+            <a class="btn green" href="/pdf-complet">تحميل ملف PDF</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card center">
+          <img class="symbol" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Berkane_letchina.JPG" alt="شعار بركان">
+          <h3>بركان</h3>
+          <p>عاصمة الحمضيات في المغرب والهوية البصرية للمشروع.</p>
+        </div>
+
+        
+
+        <div class="card">
+          <h3>نظرة سريعة</h3>
+          <p>يعرض هذا الموقع الأفكار الأساسية للتقرير بطريقة واضحة، بسيطة وأنيقة.</p>
+        </div>
+      </div>
+
+      <h2 id="about-ar" class="section-title">نبذة</h2>
+      <div class="split">
+        <div class="card">
+          <h3>لماذا هذا الموقع</h3>
+          <p>الهدف هو تحويل تقرير طويل إلى تجربة تصفح واضحة، بصرية وممتعة.</p>
+        </div>
+        <div class="card">
+          <h3>الفئة المستهدفة</h3>
+          <p>المواطنون، الطلبة، الباحثون، المؤسسات وكل من يهتم بالموضوع.</p>
+        </div>
+      </div>
+      <div class="card center">
+        <img src="https://f2.hespress.com/wp-content/uploads/2021/09/Mohamed-Ibrahimi-du-PAM-reelu-president-du-Conseil-communal-de-Berkane.jpg" alt="Mohammed IBRAHIMI" class="contrib-photo">
+        <h3>المساهم</h3>
+        <p>Mohammed IBRAHIMI - رئيس المجلس الجماعي لبركان</p>
+      </div>
+
+      <h2 id="summary-ar" class="section-title">الملخص التنفيذي</h2>
+      <div class="card">
+        <p>تقدم هذه الفقرة النتائج الرئيسية للتقرير في نقاط موجزة.</p>
+        <ul>
+          <li>النقطة 1: الفكرة الأساسية.</li>
+          <li>النقطة 2: النتيجة المهمة.</li>
+          <li>النقطة 3: النتيجة المركزية.</li>
+          <li>النقطة 4: الاتجاه الملاحظ.</li>
+          <li>النقطة 5: الاستنتاج العام.</li>
+        </ul>
+      </div>
+
+      <h2 id="chapters-ar" class="section-title">الفصول</h2>
+      <div class="grid">
+        <div class="card"><h3>الفصل 1 - السياق</h3><p>الموضوع، التحديات، والإطار العام.</p></div>
+        <div class="card"><h3>الفصل 2 - المنهجية</h3><p>المصادر، خطوات العمل، والقيود.</p></div>
+        <div class="card"><h3>الفصل 3 - النتائج</h3><p>الاستنتاجات الرئيسية للتقرير.</p></div>
+        <div class="card"><h3>الفصل 4 - التوصيات</h3><p>الإجراءات المقترحة ومسارات التحسين.</p></div>
+      </div>
+
+      <h2 id="media-ar" class="section-title">الوسائط</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>فيديو تقديمي</h3>
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="card">
+          <h3>معرض الصور</h3>
+          <img src="https://via.placeholder.com/900x500" alt="معرض بصري للتقرير">
+        </div>
+      </div>
+
+      <h2 id="contact-ar" class="section-title">تواصل</h2>
+      <div class="card">
+        <h3>جهات الاتصال</h3>
+        <p>البروفسور خالد شيات +212 631320629</p>
+        <p>فريد +212 631320629</p>
+        <p>البريد الإلكتروني: info@example.org</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function showLang(lang){
+      document.querySelectorAll('.lang-page').forEach(el => el.style.display='none');
+      document.getElementById(lang).style.display='block';
+      document.querySelectorAll('.lang a').forEach(a => a.classList.remove('active'));
+      document.querySelectorAll('.lang a').forEach(a => { if(a.getAttribute('href')==='#'+lang) a.classList.add('active'); });
+      // Toggle all elements marked with data-lang
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        el.style.display = (el.getAttribute('data-lang') === lang) ? '' : 'none';
+        if(el.getAttribute('data-lang') === 'ar'){
+          el.style.direction = 'rtl';
+          el.style.textAlign = 'right';
+        } else {
+          el.style.direction = '';
+          el.style.textAlign = 'justify';
+        }
+      });
+      // Update URL hash without triggering a browser scroll
+      if (history && history.replaceState) {
+        history.replaceState(null, '', '#'+lang);
+      } else {
+        // fallback (may trigger scroll in old browsers)
+        window.location.hash = lang;
+      }
+      // Ensure view starts at the top when switching languages (avoids mid-page start)
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      } catch (e) {
+        window.scrollTo(0,0);
+      }
+    }
+    if(location.hash){
+      const lang = location.hash.replace('#','');
+      if(['fr','en','ar'].includes(lang)) showLang(lang);
+    }
+  </script>
+</body>
+</html>
